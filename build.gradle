@@ -1,0 +1,81 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenLocal()
+  }
+
+  dependencies {
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.5'
+  }
+}
+
+/*
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+*/
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply from: file('gradle/publishing.gradle')
+
+group = 'net.javaforge.docbook4j'
+version = '1.0.1'
+
+description = """docbook4j"""
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+
+repositories {
+  jcenter()
+  maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+  compile group: 'xalan', name: 'xalan', version:'2.7.1'
+  compile group: 'xerces', name: 'xercesImpl', version:'2.11.0'
+  compile group: 'xml-resolver', name: 'xml-resolver', version:'1.2'
+  compile(group: 'org.apache.commons', name: 'commons-vfs2', version:'2.0') {
+    exclude(module: 'commons-logging')
+  }
+
+  // compile group: 'net.sf.docbook', name: 'docbook-xsl', version:'1.78.0', classifier:'ns-resources'
+  // compile group: 'net.sf.docbook', name: 'docbook-xml', version:'5.1b4-all', classifier:'resources'
+  compile group: 'net.sf.docbook', name: 'docbook-xsl', version:'1.78.0', ext: 'pom'
+  compile group: 'net.sf.docbook', name: 'docbook-xml', version: '5.1b4-all', ext: 'pom'
+
+  compile(group: 'org.apache.xmlgraphics', name: 'fop', version:'1.0') {
+    exclude(module: 'commons-logging')
+    exclude(module: 'avalon-framework-impl')
+    exclude(module: 'avalon-framework-api')
+  }
+  compile group: 'org.apache.avalon.framework', name: 'avalon-framework-api', version:'4.3.1'
+  compile group: 'org.apache.avalon.framework', name: 'avalon-framework-impl', version:'4.3.1'
+  compile(group: 'net.sf.docbook', name: 'docbook-xsl-xalan', version:'1.0.1-pre') {
+    exclude(module: 'xalan')
+  }
+  compile group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.7.5'
+  compile group: 'net.sf.offo', name: 'fop-hyph', version:'2.0'
+  testCompile group: 'junit', name: 'junit', version:'4.11'
+  runtime(group: 'commons-httpclient', name: 'commons-httpclient', version:'3.1') {
+    exclude(module: 'commons-logging')
+    /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+    This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+    Please review and delete this closure when resolved. */
+  }
+  compile(group: 'ognl', name: 'ognl', version:'3.0.8') {
+    /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+    This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+    Please review and delete this closure when resolved. */
+  }
+  compile(group: 'org.mvel', name: 'mvel2', version:'2.1.8.Final') {
+    /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+    This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+    Please review and delete this closure when resolved. */
+  }
+  runtime(group: 'org.slf4j', name: 'slf4j-simple', version:'1.7.5') {
+    /* This dependency was originally in the Maven provided scope, but the project was not of type war.
+    This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
+    Please review and delete this closure when resolved. */
+  }
+}
